@@ -12,9 +12,13 @@ export default async function DashboardLayout({
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div style={{ minHeight: "100vh", background: "#080812" }}>
       <Navbar user={session.user} />
-      <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
+      <main
+        style={{ maxWidth: 1152, margin: "0 auto", padding: "20px 16px 40px" }}
+      >
+        {children}
+      </main>
     </div>
   );
 }

@@ -51,28 +51,25 @@ export default function ExportMenu({ expenses, month }: Props) {
   async function exportPDF() {
     const { default: jsPDF } = await import("jspdf");
     const { default: autoTable } = await import("jspdf-autotable");
-
     const doc = new jsPDF();
     const total = expenses.reduce((s, e) => s + e.amount, 0);
 
-    // Header
     doc.setFillColor(8, 8, 18);
     doc.rect(0, 0, 210, 297, "F");
     doc.setTextColor(212, 168, 83);
-    doc.setFontSize(24);
+    doc.setFontSize(22);
     doc.text("LEDGER", 14, 20);
-    doc.setFontSize(11);
+    doc.setFontSize(10);
     doc.setTextColor(150, 150, 150);
     doc.text(`Expense Report — ${month}`, 14, 30);
     doc.text(
-      `Total: $${total.toFixed(2)} across ${expenses.length} transactions`,
+      `Total: $${total.toFixed(2)} · ${expenses.length} transactions`,
       14,
       38
     );
 
-    // Table
     autoTable(doc, {
-      startY: 48,
+      startY: 46,
       head: [["Date", "Title", "Category", "Amount", "Tags"]],
       body: expenses.map((e) => [
         format(new Date(e.date), "MMM d, yyyy"),
@@ -84,7 +81,7 @@ export default function ExportMenu({ expenses, month }: Props) {
       styles: {
         fillColor: [15, 15, 26],
         textColor: [200, 192, 180],
-        fontSize: 10,
+        fontSize: 9,
       },
       headStyles: {
         fillColor: [22, 22, 40],
@@ -106,30 +103,24 @@ export default function ExportMenu({ expenses, month }: Props) {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 6,
+          gap: 5,
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: 10,
-          padding: "10px 16px",
+          padding: "8px 12px",
           cursor: "pointer",
           color: "#888",
           fontSize: 13,
           fontFamily: "inherit",
         }}
-        onMouseEnter={(e) =>
-          (e.currentTarget.style.borderColor = "rgba(212,168,83,0.3)")
-        }
-        onMouseLeave={(e) =>
-          (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
-        }
       >
         <Download size={14} />
-        Export
+        <span>Export</span>
         <ChevronDown
           size={12}
           style={{
             transform: open ? "rotate(180deg)" : "none",
-            transition: "transform 0.2s",
+            transition: "0.2s",
           }}
         />
       </button>
@@ -138,28 +129,28 @@ export default function ExportMenu({ expenses, month }: Props) {
         <div
           style={{
             position: "absolute",
-            top: "calc(100% + 8px)",
+            top: "calc(100% + 6px)",
             right: 0,
             zIndex: 100,
             background: "#161628",
             border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: 12,
             overflow: "hidden",
-            minWidth: 140,
+            minWidth: 150,
             boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
           }}
         >
           {[
-            { label: "Export as CSV", onClick: exportCSV },
-            { label: "Export as PDF", onClick: exportPDF },
+            { label: "Export as CSV", fn: exportCSV },
+            { label: "Export as PDF", fn: exportPDF },
           ].map((item) => (
             <button
               key={item.label}
-              onClick={item.onClick}
+              onClick={item.fn}
               style={{
                 display: "block",
                 width: "100%",
-                padding: "12px 16px",
+                padding: "13px 16px",
                 background: "none",
                 border: "none",
                 cursor: "pointer",

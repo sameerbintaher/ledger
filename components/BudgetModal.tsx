@@ -21,7 +21,6 @@ interface Props {
 
 export default function BudgetModal({
   budgets,
-  month,
   onSave,
   onDelete,
   onClose,
@@ -37,14 +36,16 @@ export default function BudgetModal({
     setLimit("");
   }
 
-  const inputStyle = {
-    padding: "10px 14px",
-    fontSize: 14,
+  const inp = {
+    padding: "11px 12px",
+    fontSize: 16,
     background: "rgba(255,255,255,0.05)",
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: 10,
     color: "#f0e8d8",
     fontFamily: "inherit",
+    width: "100%",
+    boxSizing: "border-box" as const,
   };
 
   return (
@@ -54,17 +55,16 @@ export default function BudgetModal({
         inset: 0,
         zIndex: 50,
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-end",
         justifyContent: "center",
-        padding: 20,
       }}
     >
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(5,5,15,0.75)",
-          backdropFilter: "blur(10px)",
+          background: "rgba(5,5,15,0.8)",
+          backdropFilter: "blur(8px)",
         }}
         onClick={onClose}
       />
@@ -72,30 +72,47 @@ export default function BudgetModal({
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: 500,
+          maxWidth: 520,
           background: "linear-gradient(145deg,#0f0f1a,#161628)",
           border: "1px solid rgba(212,168,83,0.2)",
-          borderRadius: 20,
-          overflow: "hidden",
-          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
-          maxHeight: "90vh",
+          borderRadius: "20px 20px 0 0",
+          maxHeight: "85vh",
           overflowY: "auto",
+          boxShadow: "0 -20px 60px rgba(0,0,0,0.6)",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "12px 0 0",
+          }}
+        >
+          <div
+            style={{
+              width: 36,
+              height: 4,
+              borderRadius: 99,
+              background: "rgba(255,255,255,0.1)",
+            }}
+          />
+        </div>
         <div
           style={{
             height: 1,
             background:
               "linear-gradient(90deg,transparent,#D4A853,transparent)",
+            margin: "12px 0 0",
           }}
         />
-        <div style={{ padding: "24px 28px 28px" }}>
+
+        <div style={{ padding: "20px 20px 32px" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 24,
+              marginBottom: 20,
             }}
           >
             <span
@@ -111,10 +128,10 @@ export default function BudgetModal({
               onClick={onClose}
               style={{
                 background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: "none",
                 borderRadius: 8,
-                width: 32,
-                height: 32,
+                width: 34,
+                height: 34,
                 cursor: "pointer",
                 color: "#888",
                 display: "flex",
@@ -126,52 +143,62 @@ export default function BudgetModal({
             </button>
           </div>
 
-          {/* Add budget form */}
+          {/* Add form */}
           <form
             onSubmit={handleAdd}
-            style={{ display: "flex", gap: 8, marginBottom: 24 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              marginBottom: 20,
+            }}
           >
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              style={{ ...inputStyle, flex: 1, background: "#161628" }}
+              style={{ ...inp, background: "#161628" }}
             >
               {CATEGORIES.map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={limit}
-              onChange={(e) => setLimit(e.target.value)}
-              placeholder="Limit $"
-              style={{ ...inputStyle, width: 110 }}
-              onFocus={(e) => (e.target.style.borderColor = "#D4A853")}
-              onBlur={(e) =>
-                (e.target.style.borderColor = "rgba(255,255,255,0.1)")
-              }
-            />
-            <button
-              type="submit"
-              style={{
-                background: "linear-gradient(135deg,#D4A853,#B8864A)",
-                border: "none",
-                borderRadius: 10,
-                padding: "0 16px",
-                cursor: "pointer",
-                color: "#0f0f1a",
-                fontWeight: 700,
-                fontFamily: "inherit",
-                fontSize: 13,
-              }}
-            >
-              SET
-            </button>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                type="number"
+                inputMode="decimal"
+                step="0.01"
+                min="0"
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                placeholder="Monthly limit ($)"
+                style={{ ...inp, flex: 1 }}
+                onFocus={(e) => (e.target.style.borderColor = "#D4A853")}
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "rgba(255,255,255,0.1)")
+                }
+              />
+              <button
+                type="submit"
+                style={{
+                  background: "linear-gradient(135deg,#D4A853,#B8864A)",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "0 20px",
+                  cursor: "pointer",
+                  color: "#0f0f1a",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  fontSize: 13,
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                SET
+              </button>
+            </div>
           </form>
 
-          {/* Existing budgets */}
+          {/* List */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {budgets.length === 0 ? (
               <p
@@ -194,11 +221,7 @@ export default function BudgetModal({
                     key={b.category}
                     style={{
                       background: "rgba(255,255,255,0.03)",
-                      border: `1px solid ${
-                        over
-                          ? "rgba(224,112,112,0.3)"
-                          : "rgba(255,255,255,0.07)"
-                      }`,
+                      border: `1px solid ${over ? "rgba(224,112,112,0.3)" : "rgba(255,255,255,0.07)"}`,
                       borderRadius: 12,
                       padding: "14px 16px",
                     }}
@@ -224,6 +247,7 @@ export default function BudgetModal({
                             height: 8,
                             borderRadius: "50%",
                             background: CATEGORY_COLORS[b.category] || "#999",
+                            flexShrink: 0,
                           }}
                         />
                         <span style={{ fontSize: 13, color: "#e0d8cc" }}>
@@ -252,14 +276,15 @@ export default function BudgetModal({
                             border: "none",
                             cursor: "pointer",
                             color: "#555",
-                            fontSize: 16,
+                            fontSize: 18,
+                            lineHeight: 1,
+                            padding: 0,
                           }}
                         >
                           ×
                         </button>
                       </div>
                     </div>
-                    {/* Progress bar */}
                     <div
                       style={{
                         height: 4,
@@ -276,7 +301,6 @@ export default function BudgetModal({
                             ? "#E07070"
                             : CATEGORY_COLORS[b.category] || "#D4A853",
                           borderRadius: 99,
-                          transition: "width 0.4s ease",
                         }}
                       />
                     </div>
@@ -284,7 +308,7 @@ export default function BudgetModal({
                       <p
                         style={{ fontSize: 11, color: "#E07070", marginTop: 4 }}
                       >
-                        Over budget by ${(spent - b.limit).toFixed(2)}
+                        Over by ${(spent - b.limit).toFixed(2)}
                       </p>
                     )}
                   </div>
