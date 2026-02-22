@@ -117,7 +117,15 @@ https://your-app.vercel.app/api/auth/callback/google
 
 Click **Deploy**. Vercel will build and deploy automatically. Every future `git push` triggers a new deployment.
 
----
+### 6. Results Screenshots
+
+<p align="center">
+  <img src="docs/results-screenshot.png" alt="Ledger Dashboard - Transactions View" width="800" />
+</p>
+
+<p align="center">
+  <img src="docs/results-chart.png" alt="Ledger Dashboard - Charts View" width="800" />
+</p>
 
 ## Project Structure
 
