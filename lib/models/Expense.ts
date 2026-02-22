@@ -1,6 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { CATEGORIES, Category, RECURRENCE_OPTIONS, Recurrence } from "@/lib/constants";
-export { CATEGORIES, Category };
+import {
+  CATEGORIES,
+  Category,
+  RECURRENCE_OPTIONS,
+  Recurrence,
+} from "@/lib/constants";
+export { CATEGORIES };
+export type { Category };
 
 export interface IExpense extends Document {
   userId: string;
