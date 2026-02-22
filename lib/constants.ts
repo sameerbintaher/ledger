@@ -26,8 +26,6 @@ export const CATEGORY_COLORS: Record<string, string> = {
   Other: "#9A9A9A",
 };
 
-export type Category = (typeof CATEGORIES)[number];
-
 export const RECURRENCE_OPTIONS = [
   "none",
   "daily",
